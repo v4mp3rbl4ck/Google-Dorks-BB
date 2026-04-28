@@ -5,148 +5,336 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Dorks para Bug Bounty.</title>
     <style>
-        :root {
-            --primary-color: #4CAF50;
-            --background-color: #111111;
-            --text-color: #ffffff;
-            --accent-color: #69f0ae;
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
+    :root {
+        --primary-color: #6ea8ff;
+        --accent-color: #ff6b7a;
+        --accent-soft: rgba(255, 107, 122, 0.16);
+        --blue-soft: rgba(110, 168, 255, 0.16);
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            padding: 40px 20px;
-            line-height: 1.6;
-        }
+        --background-color: #070a12;
+        --background-secondary: #0d1320;
+        --card-color: rgba(16, 24, 39, 0.78);
+        --card-hover: rgba(23, 34, 55, 0.92);
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 40px;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
+        --text-color: #f2f6ff;
+        --muted-color: #8f9bb3;
+
+        --border-color: rgba(110, 168, 255, 0.18);
+        --border-hover: rgba(255, 107, 122, 0.42);
+
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --glow-blue: rgba(110, 168, 255, 0.18);
+        --glow-red: rgba(255, 107, 122, 0.14);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background:
+            radial-gradient(circle at 20% 10%, var(--glow-blue), transparent 30%),
+            radial-gradient(circle at 80% 15%, var(--glow-red), transparent 28%),
+            linear-gradient(180deg, #05070d 0%, var(--background-color) 45%, #090b13 100%);
+        color: var(--text-color);
+        min-height: 100vh;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 80px 20px 30px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        margin: 0 0 20px;
+        background: linear-gradient(90deg, var(--primary-color), #b9ccff, var(--accent-color));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -1px;
+        text-shadow: 0 0 40px rgba(110, 168, 255, 0.08);
+    }
+
+    .subtitle {
+        color: var(--muted-color);
+        margin-bottom: 28px;
+        font-size: 1rem;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin: 28px 0 48px;
+    }
+
+    .social-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 190px;
+        padding: 14px 18px;
+        border-radius: 18px;
+        text-decoration: none;
+        color: var(--text-color);
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+            var(--card-color);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.32);
+        transition: all 0.22s ease;
+    }
+
+    .social-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-hover);
+        background:
+            linear-gradient(135deg, rgba(110, 168, 255, 0.12), rgba(255, 107, 122, 0.08)),
+            var(--card-hover);
+        box-shadow:
+            0 18px 45px rgba(0, 0, 0, 0.42),
+            0 0 28px rgba(110, 168, 255, 0.08);
+    }
+
+    .social-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--blue-soft), var(--accent-soft));
+        color: var(--primary-color);
+        border: 1px solid rgba(110, 168, 255, 0.25);
+    }
+
+    .linkedin-card .social-icon {
+        color: #8dbaff;
+        font-family: Arial, sans-serif;
+    }
+
+    .github-card .social-icon {
+        color: #ff8a96;
+        font-size: 1.3rem;
+    }
+
+    .social-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.2;
+    }
+
+    .social-text strong {
+        font-size: 0.98rem;
+    }
+
+    .social-text small {
+        margin-top: 4px;
+        font-size: 0.78rem;
+        color: var(--muted-color);
+    }
+
+    .search-container {
+        max-width: 620px;
+        margin: 0 auto 55px;
+        padding: 26px;
+        border: 1px solid var(--border-color);
+        border-radius: 22px;
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025)),
+            rgba(13, 19, 32, 0.72);
+        box-shadow:
+            0 20px 60px var(--shadow-color),
+            inset 0 1px 0 rgba(255, 255, 255, 0.035);
+        backdrop-filter: blur(10px);
+    }
+
+    label {
+        display: block;
+        color: var(--muted-color);
+        margin-bottom: 12px;
+        font-size: 1rem;
+    }
+
+    input {
+        width: 100%;
+        font-size: 1.05rem;
+        padding: 15px 18px;
+        border: 1px solid rgba(110, 168, 255, 0.18);
+        background-color: rgba(3, 7, 18, 0.72);
+        color: var(--text-color);
+        border-radius: 14px;
+        transition: all 0.25s ease;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: rgba(255, 107, 122, 0.7);
+        box-shadow:
+            0 0 0 4px rgba(255, 107, 122, 0.12),
+            0 0 30px rgba(110, 168, 255, 0.08);
+    }
+
+    input::placeholder {
+        color: #5f6b82;
+    }
+
+    #dorkList {
+        max-width: 980px;
+        margin: 0 auto 70px;
+        padding: 0 20px;
+        list-style: none;
+    }
+
+    #dorkList li {
+        position: relative;
+        margin-bottom: 16px;
+        padding: 22px 24px;
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)),
+            rgba(13, 19, 32, 0.72);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.26);
+        transition: all 0.2s ease;
+        overflow: hidden;
+    }
+
+    #dorkList li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 18px;
+        bottom: 18px;
+        width: 3px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+        opacity: 0.65;
+    }
+
+    #dorkList li:hover {
+        transform: translateY(-3px);
+        background:
+            linear-gradient(135deg, rgba(110, 168, 255, 0.08), rgba(255, 107, 122, 0.055)),
+            var(--card-hover);
+        border-color: var(--border-hover);
+        box-shadow:
+            0 16px 38px rgba(0, 0, 0, 0.36),
+            0 0 24px rgba(110, 168, 255, 0.06);
+    }
+
+    p.description {
+        color: var(--accent-color);
+        font-size: 0.78rem;
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.7px;
+        font-weight: 700;
+    }
+
+    .dorkLink {
+        display: block;
+        color: var(--text-color);
+        text-decoration: none;
+        word-break: break-word;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.98rem;
+    }
+
+    .dorkLink:hover {
+        color: #ffffff;
+    }
+
+    section {
+        max-width: 980px;
+        margin: 0 auto 60px;
+        padding: 35px 20px 0;
+        border-top: 1px solid var(--border-color);
+    }
+
+    h2 {
+        color: var(--primary-color);
+        margin-bottom: 18px;
+        text-align: center;
+    }
+
+    .link-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .link-list li {
+        margin-bottom: 12px;
+        padding: 15px 18px;
+        border-radius: 14px;
+        background: rgba(13, 19, 32, 0.72);
+        border: 1px solid var(--border-color);
+        transition: all 0.2s ease;
+    }
+
+    .link-list li:hover {
+        border-color: var(--border-hover);
+        background: rgba(23, 34, 55, 0.86);
+    }
+
+    .link-list a {
+        color: var(--text-color);
+        text-decoration: none;
+    }
+
+    .link-list a:hover {
+        color: var(--accent-color);
+    }
+
+    #tooltip {
+        display: none;
+        position: absolute;
+        background-color: #0d1320;
+        color: var(--muted-color);
+        padding: 10px 14px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 0.9em;
+        z-index: 1000;
+        max-width: 320px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding-top: 55px;
         }
 
         .search-container {
-            margin: 40px 0;
-            text-align: center;
+            padding: 20px;
         }
 
-        label {
-            display: block;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            color: #888;
-        }
-
-        input {
+        .social-card {
             width: 100%;
-            max-width: 500px;
-            font-size: 1.1em;
-            padding: 12px 20px;
-            border: none;
-            border-bottom: 2px solid var(--border-color);
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-color);
-            transition: all 0.3s ease;
-            border-radius: 4px;
+            max-width: 320px;
         }
 
-        input:focus {
-            outline: none;
-            border-bottom-color: var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.08);
+        #dorkList li {
+            padding: 18px;
         }
 
-        .social-links {
-            text-align: center;
-            margin: 20px 0;
+        .dorkLink {
+            font-size: 0.9rem;
         }
-
-        .social-links a {
-            display: inline-block;
-            margin: 0 10px;
-            padding: 8px 16px;
-            color: #888;
-            transition: color 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--accent-color);
-        }
-
-        #dorkList {
-            margin: 40px 0;
-            padding: 0;
-        }
-
-        li {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border-color);
-            transition: transform 0.2s ease;
-        }
-
-        li:hover {
-            transform: translateX(10px);
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--text-color);
-            transition: color 0.2s ease;
-        }
-
-        a:hover {
-            color: var(--accent-color);
-        }
-
-        p.description {
-            color: #888;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        section {
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        h2 {
-            font-size: 1.8em;
-            color: #888;
-            margin-bottom: 20px;
-        }
-
-        #tooltip {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: #888;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            
-            input {
-                width: calc(100% - 40px);
-            }
-        }
-    </style>
+    }
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -154,11 +342,31 @@
         <h1>Google Dorks para  Bug Bounty</h1>
         
         <div class="social-links">
-            <a href="https://www.linkedin.com/in/v4mp3rbl4ck/" target="_blank" rel="noopener">
+            <a class="social-card linkedin-card" href="https://www.linkedin.com/in/v4mp3rbl4ck/" target="_blank" rel="noopener">
+                <span class="social-icon">in</span>
+                <span class="social-text">
+                    <strong>LinkedIn</strong>
+                    <small>Conecta conmigo</small>
+                </span>
             </a>
-            <a href="https://v4mp3rbl4ck.github.io/Google-Dorks-BB/" target="_blank" rel="noopener">
-                GitHub Repositorio
+
+            <a class="social-card github-card" href="https://github.com/v4mp3rbl4ck/Google-Dorks-BB" target="_blank" rel="noopener">
+                <span class="social-icon">⌘</span>
+                <span class="social-text">
+                    <strong>GitHub</strong>
+                    <small>Ver repositorio</small>
+                </span>
             </a>
+
+            <a class="social-card github-card" href="https://vulnfocus.com" target="_blank" rel="noopener">
+                <span class="social-icon">⌘</span>
+                <span class="social-text">
+                    <strong>Website</strong>
+                    <small>Website</small>
+                </span>
+            </a>
+
+
         </div>
 
         <div class="search-container">
