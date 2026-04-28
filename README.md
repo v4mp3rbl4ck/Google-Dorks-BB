@@ -6,6 +6,8 @@ Gracias a https://taksec.github.io/
 
 </p>
 
+---
+
 
 ### Pack recomendado para añadir primero
 
@@ -51,7 +53,7 @@ site:example.com inurl:redirect_uri= OR inurl:returnUrl= OR inurl:next=
 site:example.com inurl:user_id= OR inurl:account_id= OR inurl:invoice_id=
 ```
 
----
+
 
 ### 1. Exposición de secretos, tokens y claves
 
@@ -75,7 +77,7 @@ site:example.com ext:env OR ext:yml OR ext:yaml OR ext:json "secret"
 site:example.com ("DB_PASSWORD" OR "DATABASE_URL" OR "MYSQL_ROOT_PASSWORD" OR "POSTGRES_PASSWORD")
 ```
 
----
+
 
 ### 2. Archivos de configuración sensibles
 
@@ -99,7 +101,7 @@ site:example.com "spring.datasource.password" OR "spring.datasource.username"
 site:example.com "connectionString" OR "connection_string" OR "jdbc:mysql"
 ```
 
----
+
 
 ### 3. Backups y copias olvidadas
 
@@ -123,7 +125,7 @@ site:example.com "index of" "backup"
 site:example.com "database dump" OR "sql dump" OR "db_backup"
 ```
 
----
+
 
 ### 4. SQL dumps y bases de datos expuestas
 
@@ -147,7 +149,7 @@ site:example.com inurl:phpmyadmin OR inurl:adminer OR inurl:dbadmin
 site:example.com "MySQL dump" OR "PostgreSQL database dump"
 ```
 
----
+
 
 ### 5. Paneles de administración
 
@@ -171,7 +173,7 @@ site:example.com inurl:wp-admin OR inurl:wp-login.php
 site:example.com inurl:login "admin"
 ```
 
----
+
 
 ### 6. API discovery
 
@@ -195,7 +197,7 @@ site:example.com ext:json "swagger" OR "openapi"
 site:example.com "apiKey" OR "x-api-key" OR "bearer"
 ```
 
----
+
 
 ### 7. GraphQL expuesto
 
@@ -219,7 +221,7 @@ site:example.com "query {" "mutation"
 site:example.com "GraphQL endpoint"
 ```
 
----
+
 
 ### 8. Swagger / OpenAPI mal expuesto
 
@@ -243,7 +245,7 @@ site:example.com "swagger: " "basePath"
 site:example.com "openapi: 3.0" OR "openapi: 3.1"
 ```
 
----
+
 
 ### 9. Parámetros para IDOR / Broken Access Control
 
@@ -267,7 +269,7 @@ site:example.com inurl:profile= OR inurl:member= OR inurl:client=
 site:example.com inurl:id= inurl:view
 ```
 
----
+
 
 ### 10. Parámetros para Open Redirect
 
@@ -291,7 +293,7 @@ site:example.com inurl:next= inurl:http
 site:example.com inurl:url= inurl:https
 ```
 
----
+
 
 ### 11. Parámetros para SSRF
 
@@ -315,7 +317,7 @@ site:example.com inurl:image_url= OR inurl:file_url= OR inurl:avatar_url=
 site:example.com inurl:proxy= OR inurl:fetch= OR inurl:load=
 ```
 
----
+
 
 ### 12. Parámetros para LFI / Path Traversal
 
@@ -339,7 +341,7 @@ site:example.com inurl:path= OR inurl:folder= OR inurl:dir=
 site:example.com inurl:include= OR inurl:require=
 ```
 
----
+
 
 ### 13. Parámetros para XSS
 
@@ -363,7 +365,7 @@ site:example.com inurl:return= OR inurl:error= OR inurl:debug=
 site:example.com inurl:lang= OR inurl:locale= OR inurl:redirect=
 ```
 
----
+
 
 ### 14. Parámetros para SQLi
 
@@ -387,7 +389,7 @@ site:example.com inurl:page= OR inurl:limit= OR inurl:offset=
 site:example.com inurl:search= inurl:id=
 ```
 
----
+
 
 ### 15. Upload endpoints
 
@@ -411,7 +413,7 @@ site:example.com inurl:attachment OR inurl:attachments
 site:example.com inurl:import "csv"
 ```
 
----
+
 
 ### 16. Documentos internos
 
@@ -435,7 +437,7 @@ site:example.com "employee handbook" OR "onboarding" OR "VPN"
 site:example.com "architecture diagram" OR "network diagram" OR "threat model"
 ```
 
----
+
 
 ### 17. Logs expuestos
 
@@ -459,7 +461,7 @@ site:example.com "PHP Warning" OR "PHP Notice" OR "PHP Fatal error"
 site:example.com "DEBUG" "password"
 ```
 
----
+
 
 ### 18. Errores tecnológicos específicos
 
@@ -483,7 +485,7 @@ site:example.com "Express error" OR "Node.js" "stack trace"
 site:example.com "ASP.NET" "Server Error in"
 ```
 
----
+
 
 ### 19. Subdominios interesantes
 
@@ -507,7 +509,7 @@ site:*.example.com intitle:"index of"
 site:*.example.com "Welcome to nginx" OR "Apache2 Ubuntu Default Page"
 ```
 
----
+
 
 ### 20. Directorios listados
 
@@ -531,7 +533,7 @@ site:example.com intitle:"index of" "config"
 site:example.com intitle:"index of" "logs"
 ```
 
----
+
 
 ### 21. Buckets y cloud storage
 
@@ -555,7 +557,7 @@ site:blob.core.windows.net "example.com" "confidential"
 site:sharepoint.com "example.com" "internal"
 ```
 
----
+
 
 ### 22. Jira, Confluence, GitLab, Jenkins expuestos
 
@@ -579,7 +581,7 @@ site:example.com inurl:jenkins OR intitle:"Dashboard [Jenkins]"
 site:example.com inurl:bitbucket OR intitle:"Bitbucket"
 ```
 
----
+
 
 ### 23. CI/CD y artefactos
 
@@ -603,7 +605,7 @@ site:example.com "docker-compose.yml" OR "Dockerfile"
 site:example.com "registry" "password"
 ```
 
----
+
 
 ### 24. Git expuesto
 
@@ -627,7 +629,7 @@ site:example.com "gitlab-ci" "password"
 site:example.com ".git-credentials"
 ```
 
----
+
 
 ### 25. WordPress
 
@@ -651,7 +653,7 @@ site:example.com inurl:wp-json/wp/v2/users
 site:example.com "Powered by WordPress"
 ```
 
----
+
 
 ### 26. Adobe Experience Manager AEM
 
@@ -675,7 +677,7 @@ site:example.com inurl:/content/dam ext:json
 site:example.com inurl:/bin/querybuilder.json
 ```
 
----
+
 
 ### 27. Firebase
 
@@ -699,7 +701,7 @@ site:example.com "firebaseio.com" "authDomain"
 site:example.com "storageBucket" "firebase"
 ```
 
----
+
 
 ### 28. CORS / OAuth / SSO candidates
 
@@ -723,7 +725,7 @@ site:example.com "client_id" "redirect_uri"
 site:example.com "SAMLRequest" OR "SAMLResponse"
 ```
 
----
+
 
 ### 29. Parámetros de pago / compras
 
@@ -747,7 +749,7 @@ site:example.com inurl:price= OR inurl:amount= OR inurl:total=
 site:example.com inurl:plan= OR inurl:subscription=
 ```
 
----
+
 
 ### 30. Parámetros de PII
 
@@ -771,7 +773,7 @@ site:example.com inurl:customer= OR inurl:client= OR inurl:user=
 site:example.com ext:xls OR ext:xlsx "email" "phone"
 ```
 
----
+
 
 ### 31. Archivos JavaScript
 
@@ -795,7 +797,7 @@ site:example.com ext:js "baseURL" OR "baseUrl" OR "apiUrl"
 site:example.com ext:js "sentry" OR "bugsnag" OR "datadog"
 ```
 
----
+
 
 ### 32. Source maps
 
@@ -819,7 +821,7 @@ site:example.com ext:map "webpack"
 site:example.com inurl:main.js.map OR inurl:app.js.map
 ```
 
----
+
 
 ### 33. Documentación interna o técnica
 
@@ -843,7 +845,7 @@ site:example.com "staging environment" OR "test environment"
 site:example.com "VPN" "username"
 ```
 
----
+
 
 ### 34. Dorks externos útiles
 
@@ -889,7 +891,7 @@ site:vercel.app "example.com"
 site:netlify.app "example.com"
 ```
 
----
+
 
 ### Mejoras de sintaxis
 
@@ -924,6 +926,7 @@ site:example.com inurl:app OR inurl:portal OR inurl:dashboard OR inurl:account
 ```
 
 
+---
 
 
 
