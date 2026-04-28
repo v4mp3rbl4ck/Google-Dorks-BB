@@ -55,7 +55,7 @@ site:example.com inurl:user_id= OR inurl:account_id= OR inurl:invoice_id=
 
 
 
-### 1. Exposición de secretos, tokens y claves
+## 1. Exposición de secretos, tokens y claves
 
 ```
 site:example.com ("api_key" OR "apikey" OR "api-key" OR "access_token" OR "auth_token" OR "client_secret")
@@ -79,7 +79,7 @@ site:example.com ("DB_PASSWORD" OR "DATABASE_URL" OR "MYSQL_ROOT_PASSWORD" OR "P
 
 
 
-### 2. Archivos de configuración sensibles
+## 2. Archivos de configuración sensibles
 
 ```
 site:example.com ext:env OR ext:config OR ext:conf OR ext:ini OR ext:properties
@@ -103,7 +103,7 @@ site:example.com "connectionString" OR "connection_string" OR "jdbc:mysql"
 
 
 
-### 3. Backups y copias olvidadas
+## 3. Backups y copias olvidadas
 
 ```
 site:example.com ext:bak OR ext:backup OR ext:old OR ext:orig OR ext:save OR ext:tmp
@@ -127,7 +127,7 @@ site:example.com "database dump" OR "sql dump" OR "db_backup"
 
 
 
-### 4. SQL dumps y bases de datos expuestas
+## 4. SQL dumps y bases de datos expuestas
 
 ```
 site:example.com ext:sql OR ext:db OR ext:sqlite OR ext:mdb
