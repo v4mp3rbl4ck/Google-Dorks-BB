@@ -1,352 +1,469 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Dorks para Bug Bounty.</title>
+    <title>Google Dorks para Bug Bounty</title>
+
     <style>
-    :root {
-        --primary-color: #6ea8ff;
-        --accent-color: #ff6b7a;
-        --accent-soft: rgba(255, 107, 122, 0.16);
-        --blue-soft: rgba(110, 168, 255, 0.16);
+        :root {
+            --primary-color: #6ea8ff;
+            --accent-color: #ff6b7a;
+            --accent-soft: rgba(255, 107, 122, 0.16);
+            --blue-soft: rgba(110, 168, 255, 0.16);
 
-        --background-color: #070a12;
-        --background-secondary: #0d1320;
-        --card-color: rgba(16, 24, 39, 0.78);
-        --card-hover: rgba(23, 34, 55, 0.92);
+            --background-color: #070a12;
+            --card-color: rgba(16, 24, 39, 0.78);
+            --card-hover: rgba(23, 34, 55, 0.92);
 
-        --text-color: #f2f6ff;
-        --muted-color: #8f9bb3;
+            --text-color: #f2f6ff;
+            --muted-color: #8f9bb3;
 
-        --border-color: rgba(110, 168, 255, 0.18);
-        --border-hover: rgba(255, 107, 122, 0.42);
+            --border-color: rgba(110, 168, 255, 0.18);
+            --border-hover: rgba(255, 107, 122, 0.42);
 
-        --shadow-color: rgba(0, 0, 0, 0.5);
-        --glow-blue: rgba(110, 168, 255, 0.18);
-        --glow-red: rgba(255, 107, 122, 0.14);
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background:
-            radial-gradient(circle at 20% 10%, var(--glow-blue), transparent 30%),
-            radial-gradient(circle at 80% 15%, var(--glow-red), transparent 28%),
-            linear-gradient(180deg, #05070d 0%, var(--background-color) 45%, #090b13 100%);
-        color: var(--text-color);
-        min-height: 100vh;
-        line-height: 1.6;
-    }
-
-    .container {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 80px 20px 30px;
-        text-align: center;
-    }
-
-    h1 {
-        font-size: clamp(2rem, 5vw, 3.4rem);
-        margin: 0 0 20px;
-        background: linear-gradient(90deg, var(--primary-color), #b9ccff, var(--accent-color));
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -1px;
-        text-shadow: 0 0 40px rgba(110, 168, 255, 0.08);
-    }
-
-    .subtitle {
-        color: var(--muted-color);
-        margin-bottom: 28px;
-        font-size: 1rem;
-    }
-
-    .social-links {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 16px;
-        flex-wrap: wrap;
-        margin: 28px 0 48px;
-    }
-
-    .social-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 190px;
-        padding: 14px 18px;
-        border-radius: 18px;
-        text-decoration: none;
-        color: var(--text-color);
-        background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
-            var(--card-color);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.32);
-        transition: all 0.22s ease;
-    }
-
-    .social-card:hover {
-        transform: translateY(-4px);
-        border-color: var(--border-hover);
-        background:
-            linear-gradient(135deg, rgba(110, 168, 255, 0.12), rgba(255, 107, 122, 0.08)),
-            var(--card-hover);
-        box-shadow:
-            0 18px 45px rgba(0, 0, 0, 0.42),
-            0 0 28px rgba(110, 168, 255, 0.08);
-    }
-
-    .social-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 1.1rem;
-        background: linear-gradient(135deg, var(--blue-soft), var(--accent-soft));
-        color: var(--primary-color);
-        border: 1px solid rgba(110, 168, 255, 0.25);
-    }
-
-    .linkedin-card .social-icon {
-        color: #8dbaff;
-        font-family: Arial, sans-serif;
-    }
-
-    .github-card .social-icon {
-        color: #ff8a96;
-        font-size: 1.3rem;
-    }
-
-    .social-text {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        line-height: 1.2;
-    }
-
-    .social-text strong {
-        font-size: 0.98rem;
-    }
-
-    .social-text small {
-        margin-top: 4px;
-        font-size: 0.78rem;
-        color: var(--muted-color);
-    }
-
-    .search-container {
-        max-width: 620px;
-        margin: 0 auto 55px;
-        padding: 26px;
-        border: 1px solid var(--border-color);
-        border-radius: 22px;
-        background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025)),
-            rgba(13, 19, 32, 0.72);
-        box-shadow:
-            0 20px 60px var(--shadow-color),
-            inset 0 1px 0 rgba(255, 255, 255, 0.035);
-        backdrop-filter: blur(10px);
-    }
-
-    label {
-        display: block;
-        color: var(--muted-color);
-        margin-bottom: 12px;
-        font-size: 1rem;
-    }
-
-    input {
-        width: 100%;
-        font-size: 1.05rem;
-        padding: 15px 18px;
-        border: 1px solid rgba(110, 168, 255, 0.18);
-        background-color: rgba(3, 7, 18, 0.72);
-        color: var(--text-color);
-        border-radius: 14px;
-        transition: all 0.25s ease;
-    }
-
-    input:focus {
-        outline: none;
-        border-color: rgba(255, 107, 122, 0.7);
-        box-shadow:
-            0 0 0 4px rgba(255, 107, 122, 0.12),
-            0 0 30px rgba(110, 168, 255, 0.08);
-    }
-
-    input::placeholder {
-        color: #5f6b82;
-    }
-
-    #dorkList {
-        max-width: 980px;
-        margin: 0 auto 70px;
-        padding: 0 20px;
-        list-style: none;
-    }
-
-    #dorkList li {
-        position: relative;
-        margin-bottom: 16px;
-        padding: 22px 24px;
-        border: 1px solid var(--border-color);
-        border-radius: 18px;
-        background:
-            linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)),
-            rgba(13, 19, 32, 0.72);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.26);
-        transition: all 0.2s ease;
-        overflow: hidden;
-    }
-
-    #dorkList li::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 18px;
-        bottom: 18px;
-        width: 3px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
-        opacity: 0.65;
-    }
-
-    #dorkList li:hover {
-        transform: translateY(-3px);
-        background:
-            linear-gradient(135deg, rgba(110, 168, 255, 0.08), rgba(255, 107, 122, 0.055)),
-            var(--card-hover);
-        border-color: var(--border-hover);
-        box-shadow:
-            0 16px 38px rgba(0, 0, 0, 0.36),
-            0 0 24px rgba(110, 168, 255, 0.06);
-    }
-
-    p.description {
-        color: var(--accent-color);
-        font-size: 0.78rem;
-        margin: 0 0 10px;
-        text-transform: uppercase;
-        letter-spacing: 1.7px;
-        font-weight: 700;
-    }
-
-    .dorkLink {
-        display: block;
-        color: var(--text-color);
-        text-decoration: none;
-        word-break: break-word;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.98rem;
-    }
-
-    .dorkLink:hover {
-        color: #ffffff;
-    }
-
-    section {
-        max-width: 980px;
-        margin: 0 auto 60px;
-        padding: 35px 20px 0;
-        border-top: 1px solid var(--border-color);
-    }
-
-    h2 {
-        color: var(--primary-color);
-        margin-bottom: 18px;
-        text-align: center;
-    }
-
-    .link-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .link-list li {
-        margin-bottom: 12px;
-        padding: 15px 18px;
-        border-radius: 14px;
-        background: rgba(13, 19, 32, 0.72);
-        border: 1px solid var(--border-color);
-        transition: all 0.2s ease;
-    }
-
-    .link-list li:hover {
-        border-color: var(--border-hover);
-        background: rgba(23, 34, 55, 0.86);
-    }
-
-    .link-list a {
-        color: var(--text-color);
-        text-decoration: none;
-    }
-
-    .link-list a:hover {
-        color: var(--accent-color);
-    }
-
-    #tooltip {
-        display: none;
-        position: absolute;
-        background-color: #0d1320;
-        color: var(--muted-color);
-        padding: 10px 14px;
-        border: 1px solid var(--border-color);
-        border-radius: 10px;
-        font-size: 0.9em;
-        z-index: 1000;
-        max-width: 320px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
-    @media (max-width: 768px) {
-        .container {
-            padding-top: 55px;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --glow-blue: rgba(110, 168, 255, 0.18);
+            --glow-red: rgba(255, 107, 122, 0.14);
         }
 
-        .search-container {
-            padding: 20px;
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at 20% 10%, var(--glow-blue), transparent 30%),
+                radial-gradient(circle at 80% 15%, var(--glow-red), transparent 28%),
+                linear-gradient(180deg, #05070d 0%, var(--background-color) 45%, #090b13 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 80px 20px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            margin: 0 0 16px;
+            background: linear-gradient(90deg, var(--primary-color), #b9ccff, var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--muted-color);
+            margin: 0 auto 28px;
+            font-size: 1rem;
+            max-width: 700px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 28px 0 48px;
         }
 
         .social-card {
-            width: 100%;
-            max-width: 320px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 190px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--text-color);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+                var(--card-color);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 14px 38px rgba(0, 0, 0, 0.32);
+            transition: all 0.22s ease;
         }
 
-        #dorkList li {
-            padding: 18px;
+        .social-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            background:
+                linear-gradient(135deg, rgba(110, 168, 255, 0.12), rgba(255, 107, 122, 0.08)),
+                var(--card-hover);
+        }
+
+        .social-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--blue-soft), var(--accent-soft));
+            color: var(--primary-color);
+            border: 1px solid rgba(110, 168, 255, 0.25);
+        }
+
+        .linkedin-card .social-icon {
+            color: #8dbaff;
+            font-family: Arial, sans-serif;
+        }
+
+        .website-card .social-icon {
+            color: #ffffff;
+            font-size: 1.2rem;
+        }
+
+        .github-card .social-icon {
+            color: #ff8a96;
+            font-size: 1.3rem;
+        }
+
+        .social-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+
+        .social-text strong {
+            font-size: 0.98rem;
+        }
+
+        .social-text small {
+            margin-top: 4px;
+            font-size: 0.78rem;
+            color: var(--muted-color);
+        }
+
+        .search-container {
+            max-width: 620px;
+            margin: 0 auto 34px;
+            padding: 26px;
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025)),
+                rgba(13, 19, 32, 0.72);
+            box-shadow:
+                0 20px 60px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(10px);
+        }
+
+        label {
+            display: block;
+            color: var(--muted-color);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        input {
+            width: 100%;
+            font-size: 1.05rem;
+            padding: 15px 18px;
+            border: 1px solid rgba(110, 168, 255, 0.18);
+            background-color: rgba(3, 7, 18, 0.72);
+            color: var(--text-color);
+            border-radius: 14px;
+            transition: all 0.25s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(255, 107, 122, 0.7);
+            box-shadow:
+                0 0 0 4px rgba(255, 107, 122, 0.12),
+                0 0 30px rgba(110, 168, 255, 0.08);
+        }
+
+        input::placeholder {
+            color: #5f6b82;
+        }
+
+        #tooltip {
+            display: none;
+            position: absolute;
+            background-color: #0d1320;
+            color: var(--muted-color);
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9em;
+            z-index: 1000;
+            max-width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .group-filter {
+            max-width: 980px;
+            margin: 0 auto 42px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .filter-title {
+            color: var(--muted-color);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .filter-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-toggle input {
+            width: auto;
+            accent-color: var(--accent-color);
+        }
+
+        .group-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .group-buttons.hidden {
+            display: none;
+        }
+
+        .group-button {
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 10px 15px;
+            color: var(--text-color);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)),
+                rgba(13, 19, 32, 0.72);
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+
+        .group-button:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
+            background:
+                linear-gradient(135deg, rgba(110, 168, 255, 0.10), rgba(255, 107, 122, 0.07)),
+                rgba(23, 34, 55, 0.86);
+        }
+
+        .group-button.active {
+            color: #ffffff;
+            border-color: rgba(255, 107, 122, 0.55);
+            background:
+                linear-gradient(135deg, rgba(110, 168, 255, 0.22), rgba(255, 107, 122, 0.18)),
+                rgba(23, 34, 55, 0.95);
+            box-shadow: 0 0 24px rgba(110, 168, 255, 0.09);
+        }
+
+        #dorkList {
+            max-width: 980px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .dork-group {
+            margin: 0 auto 26px;
+            padding: 22px;
+            border-radius: 22px;
+            border: 1px solid var(--border-color);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)),
+                rgba(13, 19, 32, 0.72);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+            overflow: hidden;
+        }
+
+        .group-title {
+            margin: 0 0 18px;
+            color: var(--primary-color);
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        .group-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .group-list li {
+            position: relative;
+            margin-bottom: 12px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(110, 168, 255, 0.14);
+            background: rgba(3, 7, 18, 0.42);
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .group-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 14px;
+            bottom: 14px;
+            width: 3px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+            opacity: 0.7;
+        }
+
+        .group-list li:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
+            background:
+                linear-gradient(135deg, rgba(110, 168, 255, 0.08), rgba(255, 107, 122, 0.055)),
+                rgba(23, 34, 55, 0.86);
+        }
+
+        .group-list li:last-child {
+            margin-bottom: 0;
         }
 
         .dorkLink {
-            font-size: 0.9rem;
+            display: block;
+            color: var(--text-color);
+            text-decoration: none;
+            word-break: break-word;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.98rem;
+            padding-left: 8px;
         }
-    }
-</style>
+
+        .dorkLink:hover {
+            color: #ffffff;
+        }
+
+        section {
+            max-width: 980px;
+            margin: 0 auto 60px;
+            padding: 35px 20px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .link-list li {
+            margin-bottom: 12px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            background: rgba(13, 19, 32, 0.72);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .link-list li:hover {
+            border-color: var(--border-hover);
+            background: rgba(23, 34, 55, 0.86);
+        }
+
+        .link-list a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .link-list a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-top: 55px;
+            }
+
+            .search-container {
+                padding: 20px;
+            }
+
+            .social-card {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .dork-group {
+                padding: 18px;
+            }
+
+            .group-list li {
+                padding: 16px;
+            }
+
+            .dorkLink {
+                font-size: 0.9rem;
+            }
+
+            .group-button {
+                font-size: 0.82rem;
+                padding: 9px 13px;
+            }
+        }
+    </style>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
-        <h1>Google Dorks para  Bug Bounty</h1>
-        
+        <h1>Google Dorks para Bug Bounty</h1>
+
+        <p class="subtitle">
+            Generador de búsquedas para reconocimiento autorizado, bug bounty y análisis de exposición pública.
+        </p>
+
         <div class="social-links">
             <a class="social-card linkedin-card" href="https://www.linkedin.com/in/v4mp3rbl4ck/" target="_blank" rel="noopener">
                 <span class="social-icon">in</span>
                 <span class="social-text">
                     <strong>LinkedIn</strong>
                     <small>Conecta conmigo</small>
+                </span>
+            </a>
+
+            <a class="social-card website-card" href="https://vulnfocus.com" target="_blank" rel="noopener">
+                <span class="social-icon">🌐</span>
+                <span class="social-text">
+                    <strong>Website</strong>
+                    <small>Visitar página</small>
                 </span>
             </a>
 
@@ -357,163 +474,240 @@
                     <small>Ver repositorio</small>
                 </span>
             </a>
-
-            <a class="social-card github-card" href="https://vulnfocus.com" target="_blank" rel="noopener">
-                <span class="social-icon">⌘</span>
-                <span class="social-text">
-                    <strong>Website</strong>
-                    <small>Website</small>
-                </span>
-            </a>
-
-
         </div>
 
         <div class="search-container">
-            <label for="domainInput">domain:</label>
+            <label for="domainInput">Ingresa un dominio:</label>
             <input type="text" id="domainInput" placeholder="example.com" oninput="updateDomain()">
         </div>
-        
-        <div id="tooltip" class="hidden">For multiple domains, separate by comma. e.g., example1.com, example2.com</div>
+
+        <div id="tooltip">
+            Para múltiples dominios, sepáralos con coma. Ejemplo: example1.com, example2.com
+        </div>
+
+        <div class="group-filter">
+            <div class="filter-header">
+                <p class="filter-title">Filtrar por grupo:</p>
+
+                <label class="filter-toggle">
+                    <input type="checkbox" id="enableFilter" onchange="toggleFilterMode()">
+                    <span>Activar filtro</span>
+                </label>
+            </div>
+
+            <div id="groupButtons" class="group-buttons hidden"></div>
+        </div>
     </div>
 
-    <ul id="dorkList"></ul>
+    <div id="dorkList"></div>
 
     <section>
-        <h2>Additional Resources</h2>
+        <h2>Recursos adicionales</h2>
         <ul class="link-list">
-            <li><a href="https://github.com/TakSec/google-dorks-bug-bounty/" target="_blank" rel="noopener">Agradecimientos al principal creador Google Dorks For Bug Bounty</a></li>
-        
+            <li>
+                <a href="https://github.com/TakSec/google-dorks-bug-bounty/" target="_blank" rel="noopener">
+                    Agradecimientos al principal creador: Google Dorks For Bug Bounty
+                </a>
+            </li>
         </ul>
     </section>
 
     <script>
-        const domainInput = document.getElementById('domainInput');
-        const tooltip = document.getElementById('tooltip');
+        const domainInput = document.getElementById("domainInput");
+        const tooltip = document.getElementById("tooltip");
 
-        domainInput.addEventListener('mouseover', function() {
-            tooltip.style.display = 'block';
-            tooltip.style.left = domainInput.offsetLeft + 'px';
-            tooltip.style.top = (domainInput.offsetTop + domainInput.offsetHeight + 5) + 'px';
+        domainInput.addEventListener("mouseover", function () {
+            tooltip.style.display = "block";
+            tooltip.style.left = domainInput.offsetLeft + "px";
+            tooltip.style.top = (domainInput.offsetTop + domainInput.offsetHeight + 5) + "px";
         });
 
-        domainInput.addEventListener('mouseout', function() {
-            tooltip.style.display = 'none';
+        domainInput.addEventListener("mouseout", function () {
+            tooltip.style.display = "none";
         });
-        
+
         let originalDorks = [];
-        
+
         async function fetchDorks() {
             const url = "https://raw.githubusercontent.com/v4mp3rbl4ck/Google-Dorks-BB/main/README.md";
-            const response = await fetch(url);
-            const text = await response.text();
 
-            const dorkList = document.getElementById("dorkList");
-            const regex = /(?:^### (.+)|```([^`]+)```)/gm;
-            let match;
-            let title = '';
-            let firstDork = true;
+            try {
+                const response = await fetch(url);
 
-            while ((match = regex.exec(text)) !== null) {
-        if (match[1]) {
-            // Title match
-            title = match[1];
-        } else if (match[2]) {
-            // Dork match
-            const dork = match[2].trim();
-            originalDorks.push(dork);
-            const listItem = createDorkListItem(dork, title);
-            dorkList.appendChild(listItem);
-        }
-    }
-    filterDorks();
+                if (!response.ok) {
+                    console.error("No se pudo cargar el README:", response.status);
+                    return;
+                }
 
-    }
-        
-    let prevTitle = '';
+                const text = await response.text();
+                const dorkList = document.getElementById("dorkList");
+                const groupButtons = document.getElementById("groupButtons");
 
-        function createDorkListItem(dork, description) {
-            const googleLink = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
+                dorkList.innerHTML = "";
+                groupButtons.innerHTML = "";
+                originalDorks = [];
 
-            const listItem = document.createElement("li");
+                const allButton = document.createElement("button");
+                allButton.textContent = "Todos";
+                allButton.classList.add("group-button");
+                allButton.addEventListener("click", () => filterGroups("all", allButton));
+                groupButtons.appendChild(allButton);
 
-            if (description && description !== prevTitle) {
-                const desc = document.createElement("p");
-                desc.textContent = description;
-                desc.classList.add("description");
-                listItem.appendChild(desc);
-                prevTitle = description;
+                const regex = /(?:^###\s+(.+)|```([^`]+)```)/gm;
+
+                let match;
+                let currentGroup = null;
+                let currentGroupList = null;
+                let groupIndex = 0;
+
+                while ((match = regex.exec(text)) !== null) {
+                    if (match[1]) {
+                        const title = match[1].trim();
+
+                        if (title.toLowerCase().includes("omit")) {
+                            currentGroup = null;
+                            currentGroupList = null;
+                            continue;
+                        }
+
+                        const groupId = `group-${groupIndex}`;
+
+                        currentGroup = document.createElement("div");
+                        currentGroup.classList.add("dork-group");
+                        currentGroup.dataset.group = groupId;
+
+                        const groupTitle = document.createElement("h3");
+                        groupTitle.classList.add("group-title");
+                        groupTitle.textContent = title;
+
+                        currentGroupList = document.createElement("ul");
+                        currentGroupList.classList.add("group-list");
+
+                        currentGroup.appendChild(groupTitle);
+                        currentGroup.appendChild(currentGroupList);
+                        dorkList.appendChild(currentGroup);
+
+                        const button = document.createElement("button");
+                        button.textContent = title;
+                        button.classList.add("group-button");
+                        button.addEventListener("click", () => filterGroups(groupId, button));
+                        groupButtons.appendChild(button);
+
+                        groupIndex++;
+                    }
+
+                    if (match[2] && currentGroupList) {
+                        const dork = match[2].trim();
+
+                        if (!dork) continue;
+
+                        originalDorks.push(dork);
+
+                        const listItem = document.createElement("li");
+
+                        const link = document.createElement("a");
+                        link.href = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
+                        link.textContent = dork;
+                        link.classList.add("dorkLink");
+                        link.target = "_blank";
+                        link.rel = "noopener";
+
+                        listItem.appendChild(link);
+                        currentGroupList.appendChild(listItem);
+                    }
+                }
+
+                updateDomain();
+                toggleFilterMode();
+            } catch (error) {
+                console.error("Error cargando los dorks:", error);
             }
+        }
 
-            const link = document.createElement("a");
-            link.href = googleLink;
-            link.textContent = dork;
-            link.classList.add("dorkLink");
-            link.target = "_blank";
+        function filterGroups(groupId, selectedButton) {
+            const groups = document.querySelectorAll(".dork-group");
+            const buttons = document.querySelectorAll(".group-button");
 
-            listItem.appendChild(link);
+            buttons.forEach(button => button.classList.remove("active"));
+            selectedButton.classList.add("active");
 
-            return listItem;
+            groups.forEach(group => {
+                if (groupId === "all" || group.dataset.group === groupId) {
+                    group.style.display = "block";
+                } else {
+                    group.style.display = "none";
+                }
+            });
+        }
+
+        function toggleFilterMode() {
+            const enableFilter = document.getElementById("enableFilter");
+            const groupButtons = document.getElementById("groupButtons");
+            const groups = document.querySelectorAll(".dork-group");
+            const buttons = document.querySelectorAll(".group-button");
+
+            if (enableFilter.checked) {
+                groupButtons.classList.remove("hidden");
+
+                groups.forEach(group => {
+                    group.style.display = "none";
+                });
+
+                buttons.forEach(button => {
+                    button.classList.remove("active");
+                });
+            } else {
+                groupButtons.classList.add("hidden");
+
+                groups.forEach(group => {
+                    group.style.display = "block";
+                });
+
+                buttons.forEach(button => {
+                    button.classList.remove("active");
+                });
+            }
         }
 
         function updateDomain() {
-            const domainInput = document.getElementById("domainInput");
-            const domains = domainInput.value.split(",").map(domain => domain.trim());
-        
-            if (domains.length === 0) return;
-        
+            const domains = domainInput.value
+                .split(",")
+                .map(domain => domain.trim())
+                .filter(domain => domain.length > 0);
+
             const dorkLinks = document.querySelectorAll(".dorkLink");
+
             dorkLinks.forEach((link, index) => {
                 let originalDork = originalDorks[index];
-                
-                // Check if the dork is related to Drupal and skip modification
+
+                if (!originalDork) return;
+
                 if (originalDork.includes("Drupal")) {
-                    return; // Skip any modification if it's a Drupal related dork
+                    return;
                 }
 
-                // For site:example.com
-                if (/site:"?example\[?\.\]?com"?/i.test(originalDork)) {
-                    const joinedDomains = domains.map(d => `site:${d}`).join(" | ");
-                    originalDork = originalDork.replace(/site:"?example\[?\.\]?com"?/gi, joinedDomains);
-                }
-                
-                // For "example.com"
-                else if (/["']example\[?\.\]?com["']/i.test(originalDork)) {
-                    const joinedDomains = domains.map(d => `"${d}"`).join(" | ");
-                    originalDork = originalDork.replace(/["']example\[?\.\]?com["']/gi, joinedDomains);
-                }
-                
-                // For intext:"example.com" and similar patterns
-                const intextPattern = /intext:"example\.com"/gi;
-                if (intextPattern.test(originalDork)) {
-                    const joinedDomains = domains.map(d => `intext:"${d}"`).join(" | ");
-                    updatedDork = originalDork.replace(intextPattern, joinedDomains);
-                }
-                // Update intext:"" for all domains after the first
-                if (originalDork.includes('intext:"')) {
-                    const joinedDomains = domains.map((d, idx) => idx === 0 ? `intext:"${d}"` : `intext:"${d}"`).join(" | ");
-                    originalDork = originalDork.replace(/intext:"([^"]+)"/gi, joinedDomains);
-                    originalDork = originalDork.replace(/ \| "([^"]+)"/gi, " | ");
+                if (domains.length === 0) {
+                    link.textContent = originalDork;
+                    link.href = `https://www.google.com/search?q=${encodeURIComponent(originalDork)}`;
+                    return;
                 }
 
-                const updatedLink = `https://www.google.com/search?q=${encodeURIComponent(originalDork)}`;
-            
-                link.textContent = originalDork;
-                link.href = updatedLink;
+                let updatedDork = originalDork;
+
+                const joinedSiteDomains = domains.map(d => `site:${d}`).join(" | ");
+                const joinedQuotedDomains = domains.map(d => `"${d}"`).join(" | ");
+                const joinedIntextDomains = domains.map(d => `intext:"${d}"`).join(" | ");
+
+                updatedDork = updatedDork.replace(/site:"?example\[?\.\]?com"?/gi, joinedSiteDomains);
+                updatedDork = updatedDork.replace(/["']example\[?\.\]?com["']/gi, joinedQuotedDomains);
+                updatedDork = updatedDork.replace(/intext:"example\.com"/gi, joinedIntextDomains);
+
+                link.textContent = updatedDork;
+                link.href = `https://www.google.com/search?q=${encodeURIComponent(updatedDork)}`;
             });
         }
-        
-        fetchDorks();
-        
-        function filterDorks() {
-    const dorkItems = document.querySelectorAll("#dorkList li");
-    dorkItems.forEach(item => {
-        if (item.textContent.toLowerCase().includes("omit")) {
-            item.style.display = "none";
-        }
-    });
-}
 
+        fetchDorks();
     </script>
 </body>
 </html>
