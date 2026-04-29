@@ -890,42 +890,6 @@ site:vercel.app "example.com"
 ```
 site:netlify.app "example.com"
 ```
-
-
-
-### Mejoras de sintaxis
-
-#### Usar `OR` en lugar de `|`
-
-Mejor:
-
-```
-site:example.com ext:log OR ext:txt OR ext:conf OR ext:env
-```
-
-Evita depender de:
-
-```
-site:example.com ext:log | ext:txt | ext:conf | ext:env
-```
-
-#### Reducir ruido general
-
-```
-site:example.com -github.com -gitlab.com -stackoverflow.com
-```
-
-```
-site:example.com -blog -news -press -careers -jobs
-```
-
-#### Buscar solo zonas de aplicación
-
-```
-site:example.com inurl:app OR inurl:portal OR inurl:dashboard OR inurl:account
-```
-
-
 ---
 
 
