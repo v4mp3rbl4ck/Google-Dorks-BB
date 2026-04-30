@@ -1,9 +1,11 @@
 # Google Dorks for Bug Bounty
 Lista de Google Dorks para Bug Bounty
-Gracias a https://taksec.github.io/
-
 [Pagina](https://v4mp3rbl4ck.github.io/Google-Dorks-BB/)
 
+
+
+
+Gracias a https://taksec.github.io/
 </p>
 
 ---
